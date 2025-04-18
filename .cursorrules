@@ -1,0 +1,13 @@
+// --- Commit Message Rules ---
+All commits must follow Conventional Commits format, e.g.:
+  feat(auth): add login via magic link
+  fix(ui): prevent flicker on re-render
+  chore(deps): bump react from 18.2 to 19.0
+
+If AI generates a commit message, enforce:
+  - lowercase type (e.g. feat, fix, chore)
+  - scope in parentheses if relevant
+  - colon + space
+  - imperative tone (e.g. "add", not "adds")
+
+Reject commit messages that do not conform — highlight with an inline comment
