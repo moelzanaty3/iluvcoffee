@@ -8,44 +8,35 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { PartialType } from '@nestjs/swagger';
-
-// Create DTO class for creating a coffee
-export class CreateCoffeeDto {
-  readonly name: string;
-  readonly brand: string;
-  readonly flavors: string[];
-}
-
-// Create DTO class for updating a coffee using PartialType
-export class UpdateCoffeeDto extends PartialType(CreateCoffeeDto) {}
+import { CreateCoffeeDto, UpdateCoffeeDto } from './entities/coffee.entity';
+import { CoffeesService } from './coffees.service';
 
 @Controller('coffees')
 export class CoffeesController {
+  constructor(private readonly coffeesService: CoffeesService) {}
   @Get()
   findAll(@Query() paginationQuery: { limit: number; offset: number }) {
-    const { limit, offset } = paginationQuery;
-    return `This action returns all coffees. Limit ${limit}, Offset: ${offset}`;
+    // const { limit, offset } = paginationQuery;
+    return this.coffeesService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return `This action returns a #${id} coffee`;
+    return this.coffeesService.findOne(id);
   }
 
   @Post()
   create(@Body() createCoffeeDto: CreateCoffeeDto) {
-    return createCoffeeDto;
-    // This action adds a new coffee
+    return this.coffeesService.create(createCoffeeDto);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
-    return `This action updates a #${id} coffee`;
+    return this.coffeesService.update(id, updateCoffeeDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return `This action removes a #${id} coffee`;
+    return this.coffeesService.delete(id);
   }
 }
