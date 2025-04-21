@@ -1,0 +1,13 @@
+services:
+  db:
+    image: mongo
+    restart: always
+    ports:
+      - '${MONGODB_PORT}:27017'
+    environment:
+      MONGODB_DATABASE: ${MONGODB_DATABASE}
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
