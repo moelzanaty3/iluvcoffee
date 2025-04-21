@@ -38,15 +38,7 @@ export class CoffeesService {
   update(id: string, updateCoffeeDto: UpdateCoffeeDto) {
     const existingCoffee = this.findOne(id);
     if (existingCoffee) {
-      if (updateCoffeeDto.name) {
-        existingCoffee.name = updateCoffeeDto.name;
-      }
-      if (updateCoffeeDto.brand) {
-        existingCoffee.brand = updateCoffeeDto.brand;
-      }
-      if (updateCoffeeDto.flavors) {
-        existingCoffee.flavors = updateCoffeeDto.flavors;
-      }
+      Object.assign(existingCoffee, updateCoffeeDto);
     }
     return existingCoffee;
   }
