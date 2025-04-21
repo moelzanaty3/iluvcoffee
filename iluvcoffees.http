@@ -1,0 +1,30 @@
+@baseUrl = http://localhost:3000
+
+### Get all coffees with pagination
+GET {{baseUrl}}/coffees?limit=10&offset=0
+
+### Get one coffee by ID
+GET {{baseUrl}}/coffees/1
+
+### Create a new coffee
+POST {{baseUrl}}/coffees
+Content-Type: application/json
+
+{
+  "name": "Black Gold",
+  "brand": "Starbucks", 
+  "flavors": ["chocolate", "caramel"]
+}
+
+### Update a coffee
+PATCH {{baseUrl}}/coffees/1
+Content-Type: application/json
+
+{
+  "name": "Updated Coffee Name",
+  "brand": "Updated Brand",
+  "flavors": ["vanilla", "hazelnut"]
+}
+
+### Delete a coffee
+DELETE {{baseUrl}}/coffees/1
