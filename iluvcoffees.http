@@ -37,3 +37,8 @@ Content-Type: application/json
 
 ### Delete a coffee
 DELETE {{baseUrl}}/coffees/1
+
+### Recommend a coffee -- 
+### to test this, we need to enable transactions in the database first 
+### without database setup, this will fail
+POST {{baseUrl}}/coffees/6807f56a6942968962a86cd2/recommend
