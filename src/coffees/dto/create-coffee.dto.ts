@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
 
 export class CreateCoffeeDto {
   @IsString()
@@ -14,4 +20,8 @@ export class CreateCoffeeDto {
   @IsString({ each: true })
   @IsOptional()
   readonly flavors: string[];
+
+  @IsNumber()
+  @IsOptional()
+  readonly recommendations: number;
 }

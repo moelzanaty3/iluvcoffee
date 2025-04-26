@@ -6,6 +6,7 @@ import { Event, EventSchema } from '../event/entities/event.entity';
 import { CoffeesController } from './coffees.controller';
 import { CoffeesService } from './coffees.service';
 import { Coffee, CoffeeSchema } from './entities/coffee.entity';
+import { CoffeeRepository } from './repositories/coffee.repository';
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { Coffee, CoffeeSchema } from './entities/coffee.entity';
     ]),
   ],
   controllers: [CoffeesController],
-  providers: [CoffeesService],
+  providers: [CoffeesService, CoffeeRepository],
 })
 export class CoffeesModule {}

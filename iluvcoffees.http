@@ -1,6 +1,7 @@
 @baseUrl = http://localhost:3000
 
-### Get All Coffees
+### Get All Coffees and store response
+# @name getAllCoffees
 GET {{baseUrl}}/coffees
 
 ### Get all coffees with limit 10
@@ -12,8 +13,8 @@ GET {{baseUrl}}/coffees?offset=1
 ### Get all coffees with limit 10 and offset 1
 GET {{baseUrl}}/coffees?limit=10&offset=1
 
-### Get one coffee by ID
-GET {{baseUrl}}/coffees/1
+### Get one coffee by ID using first coffee from getAllCoffees
+GET {{baseUrl}}/coffees/{{getAllCoffees.response.body.0._id}}
 
 ### Create a new coffee
 POST {{baseUrl}}/coffees
@@ -25,20 +26,21 @@ Content-Type: application/json
   "flavors": ["chocolate", "caramel"]
 }
 
-### Update a coffee
-PATCH {{baseUrl}}/coffees/1
+### Update a coffee using first coffee from getAllCoffees
+PATCH {{baseUrl}}/coffees/{{getAllCoffees.response.body.0._id}}
 Content-Type: application/json
 
 {
   "name": "Updated Coffee Name",
   "brand": "Updated Brand",
-  "flavors": ["vanilla", "hazelnut"]
+  "flavors": ["vanilla", "hazelnut"],
+  "recommendations": 10
 }
 
-### Delete a coffee
-DELETE {{baseUrl}}/coffees/1
+### Delete a coffee using first coffee from getAllCoffees
+DELETE {{baseUrl}}/coffees/{{getAllCoffees.response.body.0._id}}
 
-### Recommend a coffee -- 
-### to test this, we need to enable transactions in the database first 
+### Recommend a coffee using first coffee from getAllCoffees
+### to test this, we need to enable transactions in the database first
 ### without database setup, this will fail
-POST {{baseUrl}}/coffees/6807f56a6942968962a86cd2/recommend
+POST {{baseUrl}}/coffees/{{getAllCoffees.response.body.0._id}}/recommend

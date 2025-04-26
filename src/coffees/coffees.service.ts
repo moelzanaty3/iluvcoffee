@@ -1,65 +1,28 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
-import { Event } from 'src/event/entities/event.entity';
+
+import { BaseService } from '../common/services/base.service';
+import { Event } from '../event/entities/event.entity';
 
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Coffee } from './entities/coffee.entity';
+import { CoffeeRepository } from './repositories/coffee.repository';
 
 @Injectable()
-export class CoffeesService {
+export class CoffeesService extends BaseService<
+  Coffee,
+  CreateCoffeeDto,
+  UpdateCoffeeDto,
+  CoffeeRepository
+> {
   constructor(
-    @InjectModel(Coffee.name) private readonly coffeeModel: Model<Coffee>,
+    private readonly coffeeRepository: CoffeeRepository,
     @InjectModel(Event.name) private readonly eventModel: Model<Event>,
     @InjectConnection() private readonly connection: Connection,
-  ) {}
-
-  findAll(paginationQuery: PaginationQueryDto) {
-    const { limit, offset } = paginationQuery;
-    return this.coffeeModel.find().skip(offset).limit(limit).exec();
-  }
-
-  async findOne(id: string) {
-    const coffee = await this.coffeeModel.findOne({ _id: id }).exec();
-    if (!coffee) {
-      throw new NotFoundException(`Coffee #${id} not found`);
-    }
-    return coffee;
-  }
-
-  async create(createCoffeeDto: CreateCoffeeDto): Promise<Coffee> {
-    const coffee = new this.coffeeModel(createCoffeeDto);
-    return coffee.save();
-  }
-
-  async update(id: string, updateCoffeeDto: UpdateCoffeeDto) {
-    const updatedCoffee = await this.coffeeModel
-      .findOneAndUpdate(
-        { _id: id },
-        { ...updateCoffeeDto },
-        { new: true, runValidators: true },
-      )
-      .exec();
-
-    if (!updatedCoffee) {
-      throw new NotFoundException(`Coffee #${id} not found`);
-    }
-
-    return updatedCoffee;
-  }
-
-  async delete(id: string) {
-    const coffee = await this.coffeeModel.findOneAndDelete({ _id: id }).exec();
-
-    if (!coffee) {
-      throw new NotFoundException(`Coffee #${id} not found`);
-    }
-
-    return {
-      message: `Coffee ${coffee.name} (ID: ${coffee.id}) was successfully deleted`,
-    };
+  ) {
+    super(coffeeRepository);
   }
 
   /**
