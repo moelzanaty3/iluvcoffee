@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
+import coffeeConfig from 'src/config/coffee.config';
 
 import { BaseService } from '../common/services/base.service';
 import { Event } from '../event/entities/event.entity';
@@ -21,7 +23,10 @@ export class CoffeesService extends BaseService<
     private readonly coffeeRepository: CoffeeRepository,
     @InjectModel(Event.name) private readonly eventModel: Model<Event>,
     @InjectConnection() private readonly connection: Connection,
+    @Inject(coffeeConfig.KEY)
+    private readonly coffeeConfiguration: ConfigType<typeof coffeeConfig>,
   ) {
+    console.log(coffeeConfiguration.type);
     super(coffeeRepository);
   }
 

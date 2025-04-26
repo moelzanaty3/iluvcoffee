@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as Joi from 'joi';
 
@@ -21,7 +21,13 @@ import { CoffeesModule } from './coffees/coffees.module';
       }),
     }),
     CoffeesModule,
-    MongooseModule.forRoot(process.env.MONGODB_URI ?? ''),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGODB_URI'),
+      }),
+      inject: [ConfigService],
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
